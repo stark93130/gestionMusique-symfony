@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Liste des artiste {% endblock %}
+
+{% block body %}
+<h1 class="pt-2 text-center">Liste des artistes</h1>
+
+    <div class="row pt-2">
+        {% for leArtiste in lesArtistes  %}
+            {% set nbAlbum=leArtiste.albums|length %}
+            <div class="col sm12 col-md-12 clo-lg4 col-xl-3">
+                <div class="card mb-3">
+                    <h3 class="card-header"><a href="{{ path('ficheArtiste',{'id':leArtiste.id}) }}">{{ leArtiste.nom }}</a></h3>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="" class="badge bg-success">{{ leArtiste.albums|length}}
+                            {% if nbAlbum>1 %}albums{% else %}album{% endif %}
+                            </a>
+                        </h5>
+                    </div>
+                    <img src="{{ leArtiste.image }}" class="img-fluid mx-auto rounded-circle" alt="image {{ leArtiste.image }}">
+                    <div class="card-body">
+                        <p class="card-text">{{ leArtiste.description|slice(0,200)|raw }} ...</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            {% if leArtiste.type==0 %}Artiste solo{% else %}Groupe{% endif %}</li>
+                        <a href="{{ leArtiste.site }}" class="list-group-item">Site Web</a>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}

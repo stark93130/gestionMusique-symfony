@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Fiche Album {{ leAlbum.nom }}{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Fiche Album</h1>
+    <div class="row pt-2">
+        <div class="card mb-3">
+            <h3 class="card-header"><a href="">{{ leAlbum.nom }}</a></h3>
+            <div class="row">
+                <div class="card-body">
+                </div>
+                <div class="col-3 d-flex align-items-center mx-auto">
+                    <img src="{{ leAlbum.image }}" class="img-fluid mx-auto" alt="image {{ leAlbum.nom }}">
+                </div>
+                <div class="col">
+                    <div class="card-body">
+                        <h3 class="card-text">{{ leAlbum.artiste.nom }}</h3>
+                        <p class="card-text">{{ leAlbum.date }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            {% for leStyle in leAlbum.styles  %}
+                                <span class="badge" style="background-color: {{leStyle.couleur}};"> {{leStyle.nom}} </span>
+                            {% endfor %}
+                        </li>
+                        <li class="list-group-item">
+                            {% set nbTitre = leAlbum.morceaux|length %}
+                            {{ nbTitre}}
+                            {% if nbTitre>1 %}
+                                morceaux
+                            {% else %}
+                                morceau
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover mx-auto">
+            <thead>
+            <tr>
+                <th scope="col-3">Piste</th>
+                <th scope="col-4">Titre</th>
+                <th scope="col-1">Durée</th>
+                <th scope="col-3">Note</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for morceau in leAlbum.morceaux  %}
+                <tr>
+                    <td>{{ morceau.id }}</td>
+                    <td>{{ morceau.titre  }}</td>
+                    <td>{{ morceau.duree }}</td>
+                    <td>--</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Fiche {{ leArtiste.nom}} {% endblock %}
+
+{% block body %}
+<h1 class="pt-2 text-center">Fiche {{ leArtiste.nom}}</h1>
+
+    <div class="row pt-2">
+
+            {% set nbAlbum=leArtiste.albums|length %}
+                <div class="card mb-3">
+                    <h3 class="card-header">{{ leArtiste.nom }}</h3>
+                    <div class="row">
+                        <div class="col-3 d-flex align-items-center mx-auto">
+                            <img src="{{ leArtiste.image }}" class="img-fluid mx-auto rounded-circle" alt="image {{ leArtiste.image }}">
+                        </div>
+                        <div class="col">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="" class="badge bg-success">{{ leArtiste.albums|length}}
+                                        {% if nbAlbum>1 %}albums{% else %}album{% endif %}
+                                    </a>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ leArtiste.description|raw }}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    {% if leArtiste.type==0 %}Artiste solo{% else %}Groupe{% endif %}</li>
+                                <a href="{{ leArtiste.site }}" class="list-group-item">Site Web</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <table class="table table-hover mx-auto">
+            <thead>
+            <tr>
+                <th scope="col-3">Photo</th>
+                <th scope="col-4">Nom</th>
+                <th scope="col-1">Date</th>
+                <th scope="col-3">Style</th>
+                <th scope="col-1">Morceau</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for album in leArtiste.albums  %}
+                <tr>
+                    <td><img class="miniature" src="{{ album.image }}" alt=""></td>
+                    <td><a href="{{ path('FicheAlbum',{'id':album.id}) }}">{{ album.nom }}</a> </td>
+                    <td>{{ album.date }}</td>
+                    <td>--</td>
+                    <td>{{ album.morceaux|length }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
