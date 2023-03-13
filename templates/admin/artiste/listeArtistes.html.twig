@@ -40,8 +40,15 @@
 
                 </td>
                 <td class="col-2">
-                    <a href="" class="btn btn-primary"><i class="fas fa-pen"></i></a>
-                    <a type="button" class="btn btn-danger" data-toggle="modalSimple" data-target="#exampleModal">
+                    <a href="{{ path('admin_artiste_modif',{'id':leArtiste.id}) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
+                    <a type="button" class="btn btn-danger"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modalSimple"
+                       data-titre="suppression d'un artiste"
+                       data-message="Êtes vous sur de vouloir supprimer l'artiste {{ leArtiste.nom }}"
+                       data-bouton="Supprimer l'artiste"
+                       data-lien="{{ path('admin_artiste_suppression',{id:leArtiste.id}) }}"
+                    >
                         <i class="fa-regular fa-trash-alt"></i>
                     </a>
                 </td>
@@ -54,4 +61,5 @@
     <div class="navigation mx-auto">
         {{ knp_pagination_render(lesArtistes) }}
     </div>
+    {% include 'include/_modale.html.twig' %}
 {% endblock %}

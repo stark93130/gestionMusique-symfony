@@ -1,19 +1,40 @@
-<div class="modalSimple"">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="modalSimple" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"></span>
-                </button>
+                <h1 class="modal-title fs-5" id="titreModal">titre modale</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                ...
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <a id="btn-action" href="" type="button" class="btn btn-primary"></a>
             </div>
         </div>
     </div>
 </div>
+<script>
+    const links = document.querySelectorAll('a[data-lien]');
+    const modalTitle = document.getElementById('titreModal');
+    const modalLink = document.getElementById('btn-action');
+    const modalMessage=document.querySelector(".modal-body");
+
+    links.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const lien = link.getAttribute('data-lien');
+            const titre = link.getAttribute('data-titre');
+            const message = link.getAttribute('data-message');
+            const btnText =  link.getAttribute('data-bouton')
+
+            modalLink.setAttribute('href', lien);
+            modalTitle.textContent = titre;
+            modalMessage.textContent=message;
+            modalLink.textContent=btnText;
+
+        });
+    });
+
+</script>

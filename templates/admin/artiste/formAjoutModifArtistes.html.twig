@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}{{ parent() }} - ajout artiste {% endblock %}
+{# verification de la route #}
+{% set typeForm="" %}
+{% set typeValide="" %}
+{% if app.request.attributes.get('_route')=="admin_artiste_ajout" %}
+    {% set typeForm="Ajout d'un artiste" %}
+    {% set typeValide="Valider" %}
+{% else %}
+    {% set typeForm="Modification d'un artiste" %}
+    {% set typeValide="Modifier" %}
+{% endif %}
+{% block title %}{{ parent() }} - {{ typeForm }}{% endblock %}
 
 {% block body %}
-    <h1 class="pt-2 text-center">Ajout d'un artistes</h1>
+    <h1 class="pt-2 text-center">{{ typeForm }}</h1>
+
     {{ form_start(formArtiste) }}
     {{ form_row(formArtiste.nom) }}
     {{ form_row(formArtiste.description) }}
@@ -18,7 +28,7 @@
     {{ form_row(formArtiste.image) }}
     <div class="row">
         <div class="col d-grid gap-2 col-6 mx-auto">
-            <input type="submit" class="btn btn-success" value="valider">
+            <input type="submit" class="btn btn-success" value="{{typeValide}}">
         </div>
         <div class="col d-grid gap-2 col-6 mx-auto">
             <a href="{{ path('admin_artistes') }}" class="btn btn-danger btn-block">Annuler</a>
