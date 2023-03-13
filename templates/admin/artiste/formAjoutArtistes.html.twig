@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - ajout artiste {% endblock %}
+
+{% block body %}
+    <h1 class="pt-2 text-center">Ajout d'un artistes</h1>
+    {{ form_start(formArtiste) }}
+    {{ form_row(formArtiste.nom) }}
+    {{ form_row(formArtiste.description) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(formArtiste.site) }}
+        </div>
+        <div class="col">
+            {{ form_row(formArtiste.type) }}
+        </div>
+    </div>
+    {{ form_row(formArtiste.image) }}
+    <div class="row">
+        <div class="col d-grid gap-2 col-6 mx-auto">
+            <input type="submit" class="btn btn-success" value="valider">
+        </div>
+        <div class="col d-grid gap-2 col-6 mx-auto">
+            <a href="{{ path('admin_artistes') }}" class="btn btn-danger btn-block">Annuler</a>
+        </div>
+    </div>
+
+
+    {{ form_end(formArtiste) }}
+{% endblock %}
