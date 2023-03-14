@@ -6,6 +6,7 @@ use App\Entity\Style;
 use App\Form\StyleType;
 use App\Repository\StyleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class StyleController extends AbstractController
 {
     #[Route('/admin/styles', name: 'admin_styles',methods: ["GET"])]
-    public function index(StyleRepository $repository): Response
+    public function index(StyleRepository $repository,PaginatorInterface $paginator, Request $request): Response
     {
-        $styles=$repository->listeStyleComplete();
+
+        $styles = $paginator->paginate(
+            $repository->listeStyleComplete(),
+            $request->query->getInt('page', 1), /*page number*/
+            9 /*limit per page*/
+        );
         return $this->render('admin/style/listeStyles.html.twig', [
-            'lesStyles' => $styles,
+            'lesStyles' => $styles
         ]);
     }
     #[Route('/admin/styles/ajout', name: 'admin_style_ajout', methods: ["GET", "POST"])]

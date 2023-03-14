@@ -43,5 +43,8 @@
     {% endfor %}
     </tbody>
     </table>
+    <div class="navigation mx-auto">
+        {{ knp_pagination_render(lesStyles) }}
+    </div>
     {% include 'include/_modale.html.twig' %}
 {% endblock %}

@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: StyleRepository::class)]
 #[UniqueEntity('nom',message: "Ce nom d'artiste est déjà utilisé dans la base")]
+#[UniqueEntity('couleur',message: "Ce nom d'artiste est déjà utilisé dans la base")]
 class Style
 {
     #[ORM\Id]
