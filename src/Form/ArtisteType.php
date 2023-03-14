@@ -32,7 +32,7 @@ class ArtisteType extends AbstractType
                 ]
             ])
             ->add('image', TextType::class,[
-                'require' =>false
+                'required'   => false
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => [

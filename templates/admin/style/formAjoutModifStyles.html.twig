@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{# verification de la route #}
+{% set typeForm="" %}
+{% set typeValide="" %}
+{% if app.request.attributes.get('_route')=="admin_style_ajout" %}
+    {% set typeForm="Ajout d'un style" %}
+    {% set typeValide="Valider" %}
+{% else %}
+    {% set typeForm="Modification d'un style" %}
+    {% set typeValide="Modifier" %}
+{% endif %}
+{% block title %}{{ parent() }} - {{ typeForm }}{% endblock %}
+
+{% block body %}
+    <h1 class="pt-2 text-center">{{ typeForm }}</h1>
+
+    {{ form_start(formStyle) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(formStyle.nom) }}
+        </div>
+        <div class="col">
+            {{ form_row(formStyle.couleur) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-grid gap-2 col-6 mx-auto">
+            <input type="submit" class="btn btn-success" value="{{typeValide}}">
+        </div>
+        <div class="col d-grid gap-2 col-6 mx-auto">
+            <a href="{{ path('admin_styles') }}" class="btn btn-danger btn-block">Annuler</a>
+        </div>
+    </div>
+
+
+    {{ form_end(formStyle) }}
+{% endblock %}

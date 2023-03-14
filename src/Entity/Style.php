@@ -6,8 +6,11 @@ use App\Repository\StyleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: StyleRepository::class)]
+#[UniqueEntity('nom',message: "Ce nom d'artiste est déjà utilisé dans la base")]
 class Style
 {
     #[ORM\Id]
@@ -16,6 +19,11 @@ class Style
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        min: 3,
+        max: 20,
+        minMessage: 'Le nom doit contenir au minimum {{ limit }} caractères',
+        maxMessage: 'Le nom doit contenir au maximum {{ limit }} caractères')]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
