@@ -31,7 +31,9 @@ class ArtisteType extends AbstractType
                     'placeholder' => "https://sitedelartiste.com"
                 ]
             ])
-            ->add('image', TextType::class)
+            ->add('image', TextType::class,[
+                'require' =>false
+            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'solo' => 0,

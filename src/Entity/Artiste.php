@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: ArtisteRepository::class)]
+#[UniqueEntity('nom',message: "Ce nom d'artiste est déjà utilisé dans la base")]
 class Artiste
 {
     #[ORM\Id]
@@ -17,9 +19,15 @@ class Artiste
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[Assert\NotBlank(message: 'le nom est obligatoire')]
 
+    private ?string $nom = null;
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(
+        min: 20,
+        max: 300,
+        minMessage: 'La description doit contenir au minimum {{ limit }} caractères',
+        maxMessage: 'La description doit contenir au maximum {{ limit }} caractères')]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
