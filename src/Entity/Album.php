@@ -6,8 +6,13 @@ use App\Repository\AlbumRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
+#[UniqueEntity(
+    fields: ['nom', 'artiste'],
+    message: "le nom de l'album et l'artiste sont déjà associés"
+)]
 class Album
 {
     #[ORM\Id]
@@ -19,6 +24,11 @@ class Album
     private ?string $nom = null;
 
     #[ORM\Column]
+    #[Assert\Range(
+        notInRangeMessage: 'la date doit être comprise entre {{ min }} et {{ max }}',
+        min: 1940,
+        max: 2099,
+    )]
     private ?int $date = null;
 
     #[ORM\Column(length: 255)]
@@ -32,6 +42,10 @@ class Album
     private Collection $morceaux;
 
     #[ORM\ManyToMany(targetEntity: Style::class, mappedBy: 'albums')]
+    #[Assert\Count(
+        min: 1,
+        minMessage: 'un style au minimum doit être associé à un album',
+    )]
     private Collection $styles;
 
     public function __construct()

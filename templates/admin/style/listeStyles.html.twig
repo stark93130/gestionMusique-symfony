@@ -18,7 +18,16 @@
     {% for leStyle in lesStyles %}
         {% set nbAlbum=leStyle.albums|length %}
         <tr>
-            <td class="col-1"><p style="background-color:{{ leStyle.couleur }};">&#160</p></td>
+            <td class="col-1"><span class="badge"
+                        style="
+                                display:inline-block;
+                                border-radius: 50%;
+                                height: 25px;
+                                width: 25px;
+                                background-color:{{ leStyle.couleur }};">
+
+                </span>
+            </td>
             <td class="col-7">{{ leStyle.nom }}</td>
             <td class="col-2">
                          <span class="align-self center badge bg-success">{{ nbAlbum }}

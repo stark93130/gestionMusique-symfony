@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} - {{ typeForm }}
+    {% block stylesheets %}
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    {% endblock %}
+{% endblock %}
+{# verification de la route #}
+
+{% set typeForm="" %}
+{% set typeValide="" %}
+{% if app.request.attributes.get('_route')=="admin_album_ajout" %}
+    {% set typeForm="Ajout d'un album" %}
+    {% set typeValide="Valider" %}
+{% else %}
+    {% set typeForm="Modification d'un album" %}
+    {% set typeValide="Modifier" %}
+{% endif %}
+
+
+{% block body %}
+    <h1 class="pt-2 text-center">{{ typeForm }}</h1>
+    {{ form_start(formAlbum) }}
+
+
+    <div class="row">
+        <div class="col">
+            {{ form_row(formAlbum.nom) }}
+        </div>
+        <div class="col">
+            {{ form_row(formAlbum.image) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ form_row(formAlbum.date) }}
+        </div>
+        <div class="col">
+            {{ form_row(formAlbum.artiste) }}
+        </div>
+        <div class="col">
+            {{ form_row(formAlbum.styles) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-grid gap-2 col-6 mx-auto">
+            <input type="submit" class="btn btn-success" value="{{ typeValide }}">
+        </div>
+        <div class="col d-grid gap-2 col-6 mx-auto">
+            <a href="{{ path('admin_album') }}" class="btn btn-danger btn-block">Annuler</a>
+        </div>
+    </div>
+    {{ form_end(formAlbum) }}
+    {% block javascripts %}
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.selectStyles').select2();
+            });
+        </script>
+    {% endblock %}
+{% endblock %}
