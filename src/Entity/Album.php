@@ -38,7 +38,7 @@ class Album
     #[ORM\JoinColumn(nullable: false)]
     private ?Artiste $artiste = null;
 
-    #[ORM\OneToMany(mappedBy: 'album', targetEntity: Morceau::class)]
+    #[ORM\OneToMany(mappedBy: 'album', targetEntity: Morceau::class,cascade:["persist"],orphanRemoval: true)]
     private Collection $morceaux;
 
     #[ORM\ManyToMany(targetEntity: Style::class, mappedBy: 'albums')]
@@ -48,10 +48,15 @@ class Album
     )]
     private Collection $styles;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
         $this->morceaux = new ArrayCollection();
         $this->styles = new ArrayCollection();
+        $this->setUpdatedAt(new \DateTimeImmutable());
+        $this->setImage("pochettevierge.png");
     }
 
     public function getId(): ?int
@@ -121,22 +126,22 @@ class Album
         return $this->morceaux;
     }
 
-    public function addMorceaux(Morceau $morceaux): self
+    public function addMorceau(Morceau $morceau): self
     {
-        if (!$this->morceaux->contains($morceaux)) {
-            $this->morceaux->add($morceaux);
-            $morceaux->setAlbum($this);
+        if (!$this->morceaux->contains($morceau)) {
+            $this->morceaux->add($morceau);
+            $morceau->setAlbum($this);
         }
 
         return $this;
     }
 
-    public function removeMorceaux(Morceau $morceaux): self
+    public function removeMorceau(Morceau $morceau): self
     {
-        if ($this->morceaux->removeElement($morceaux)) {
+        if ($this->morceaux->removeElement($morceau)) {
             // set the owning side to null (unless already changed)
-            if ($morceaux->getAlbum() === $this) {
-                $morceaux->setAlbum(null);
+            if ($morceau->getAlbum() === $this) {
+                $morceau->setAlbum(null);
             }
         }
 
@@ -166,6 +171,18 @@ class Album
         if ($this->styles->removeElement($style)) {
             $style->removeAlbum($this);
         }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

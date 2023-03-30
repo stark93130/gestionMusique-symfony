@@ -13,7 +13,7 @@
                            {{ leAlbum.artiste.nom }}
                         </h5>
                     </div>
-                    <img src="{{ leAlbum.image }}" class="img-fluid mx-auto" alt="image {{ leAlbum.nom }}">
+                    <img src="{{asset('images/albums/'~ leAlbum.image)}}" class="img-fluid mx-auto" alt="image {{ leAlbum.nom }}">
                     <div class="card-body">
                         <p class="card-text">{{ leAlbum.date }}</p>
                     </div>

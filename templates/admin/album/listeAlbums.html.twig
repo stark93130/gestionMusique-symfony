@@ -21,7 +21,7 @@
         {% for leAlbum in lesAlbums %}
             {% set nbTitre = leAlbum.morceaux|length %}
             <tr>
-                <td class="col-1"><img src="{{ leAlbum.image }}" class="img-fluid mx-auto rounded-circle"
+                <td class="col-1"><img src="{{asset('images/albums/'~ leAlbum.image)}}" class="img-fluid mx-auto rounded-circle"
                                        alt="image {{ leAlbum.nom }}"></td>
                 <td class="col-2">{{ leAlbum.nom }}</td>
                 <td class="col-1">{{ leAlbum.date }}</td>

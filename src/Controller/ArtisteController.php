@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Artiste;
 use App\Repository\ArtisteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

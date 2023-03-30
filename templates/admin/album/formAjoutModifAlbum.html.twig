@@ -23,24 +23,54 @@
 
 
     <div class="row">
-        <div class="col">
+        <div class="col-8">
             {{ form_row(formAlbum.nom) }}
-        </div>
-        <div class="col">
-            {{ form_row(formAlbum.image) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
             {{ form_row(formAlbum.date) }}
-        </div>
-        <div class="col">
             {{ form_row(formAlbum.artiste) }}
-        </div>
-        <div class="col">
             {{ form_row(formAlbum.styles) }}
         </div>
+
+        <div class="col-4">
+            <div>
+                <img id="imageAffichee" src="{{ asset('images/albums/'~formAlbum.image.vars.value) }}"
+                     class="rounded mx-auto img-thumbnail d-block m-auto">
+            </div>
+            <div class="mt-3">
+                {{ form_row(formAlbum.imageFile, {'id':'imageFile'}) }}
+                {{ form_errors(formAlbum.imageFile, {'id':'imageFile'}) }}
+                <a class="btn btn-primary d-block center" id="chargeImage"><i class="fas fa-upload"></i> Charger la pochette</a>
+            </div>
+        </div>
     </div>
+    <h3>Liste des morceaux</h3>
+    <button type="button" class="add-morceau btn btn-primary bt-2"><i class="fa-sharp fa-solid fa-plus"></i> Ajouter Morceaux</button>
+
+    <table class="table table-over">
+        <thead>
+        <tr>
+            <th scope="col-6">Nom</th>
+            <th scope="col-2">Durée</th>
+            <th scope="col-4">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="sousForm"
+               data-index="{{formAlbum.morceaux|length>0 ? formAlbum.morceaux|last.vars.name+1 : 0}}"
+               data-prototype={{ _self.afficheMorceau(formAlbum.morceaux.vars.prototype)|e('html_attr') }}
+        >
+        {% for morceau in formAlbum.morceaux %}
+            {{_self.afficheMorceau(morceau)}}
+        {% endfor %}
+
+        {% macro afficheMorceau(morceau) %}
+            <tr>
+                <td class="col=6">{{form_row(morceau.titre)}}</td>
+                <td class="col=2">{{form_row(morceau.duree)}}</td>
+                <td class="col=4"><a href="" class="supprMorceau btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>
+            </tr>
+        {% endmacro %}
+        </tbody>
+    </table>
+
     <div class="row">
         <div class="col d-grid gap-2 col-6 mx-auto">
             <input type="submit" class="btn btn-success" value="{{ typeValide }}">
@@ -59,4 +89,56 @@
             });
         </script>
     {% endblock %}
+    <script src="{{ asset('js/gestionUpload.js') }}"></script>
+    <script>
+        window.onload=()=>{
+            // je récupère le bouton "ajouter un morceau"
+            const btn_add_morceau=document.querySelector('.add-morceau')
+            // j'écoute le clic sur ce bouton pour déclencher addFormCollection
+            btn_add_morceau.addEventListener("click", addFormToCollection)
+            listenSuppr()
+        };
+
+        // fonction qui ajoute une ligne (un sous formulaire) représentant un nouveau morceau
+        function addFormToCollection(){
+            // on récupère la div qui entoure la collection
+            const collection=document.querySelector('#sousForm');
+            //on récupère l'index à utiliser pour le nouveau formulaire
+            let index=collection.dataset.index;
+            // on recupére le prototype
+            let proto=collection.dataset.prototype;
+
+            // et on remplace __name__ par l'index
+            proto=proto.replace(/__name__/g,index);
+            console.log(proto)
+            // on crée l'élément html contenant le code du proto
+            let elementAAjouter=document.createElement('tr');
+            elementAAjouter.innerHTML=proto;
+            // on ajoute le proto à la collection
+            collection.appendChild(elementAAjouter);
+            // on augmente l'index de la collection
+            collection.dataset.index++;
+            // on rééxecute cette fonction pour que le nouveau bouton "poubelle"
+            // soit écouté par le listener
+            listenSuppr()
+        };
+        //fonction qui supprime un morceau (donc un sous formulaire représentant le morceau) du formulaire
+        function listenSuppr(){
+            // je récupère tous les boutons "poubelle" (supprimer)
+            const ListeBoutons=document.querySelectorAll('.supprMorceau')
+            // j'écoute le clic sur ces bouton pour déclencher le fait
+            // de supprimer toute la collection de champs du morceau à supprimer
+            ListeBoutons.forEach((bouton) => {
+                    bouton.addEventListener("click", function(event){
+                        // on supprimer le parent du parent du bouton poubelle donc le <tr>
+
+                        this.parentNode.parentNode.remove()
+                        event.preventDefault()
+
+
+                    })
+                }
+            )
+        }
+    </script>
 {% endblock %}

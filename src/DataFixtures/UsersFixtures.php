@@ -22,7 +22,7 @@ class UsersFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
         $faker = Factory::create("fr-FR");
-        $genres=["male","female"];
+        $genres=["men","women"];
         for ($i=0;$i<20;$i++){
             $sexe=mt_rand(0,1);
             $type=$sexe=0 ?"men":"women";

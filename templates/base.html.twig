@@ -17,46 +17,60 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('accueil') }}">M@ Musique</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
-                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false">Gestion des artistes</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('artistes') }}">Liste des artistes</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false">Gestion des albums</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('album') }}">Liste des albums</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false">Administration</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('admin_artistes') }}">Gestion des artistes</a>
-                        <a class="dropdown-item" href="{{ path('admin_styles') }}">Gestion des styles</a>
-                        <a class="dropdown-item" href="{{ path('admin_album') }}">Gestion des album</a>
-                    </div>
-                </li>
-            </ul>
+    <a class="navbar-brand" href=" {{ path('accueil') }} ">M@ Musique</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        </div>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href=" {{ path('artistes') }} ">Liste des artistes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=" {{ path('albums') }} ">Liste des albums</a>
+            </li>
+            {% if app.user and is_granted('ROLE_ADMIN') %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href=" {{ path('admin_artistes') }} ">Gestion des artistes</a>
+                        <a class="dropdown-item" href=" {{ path('admin_styles') }} ">Gestion des styles</a>
+                        <a class="dropdown-item" href=" {{ path('admin_album') }} ">Gestion des albums</a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+
     </div>
+    <ul class="navbar-nav my-auto me-5">
+        {% if app.user %}
+            <li class="nav-item">
+                <img class="avatar supermini" src=" {{ app.user.avatar }} " alt="photo de {{ app.user.fullName }} ">
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.fullName }}</a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#">Mon profil</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href=" {{ path('app_logout') }} ">Se déconnecter</a>
+                </div>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a href=" {{ path('app_login') }} " class="nav-link">Se connecter</a>
+            </li>
+            <li class="nav-item">
+                <a href=" {{ path('app_register') }} " class="nav-link">S'inscrire</a>
+            </li>
+        {% endif %}
+    </ul>
 </nav>
+
 <div class="container">
     {# affiche les messages flashes #}
-    {% for label,messages in app.flashes%}
+    {% for label,messages in app.flashes %}
         <div class="alert alert-{{ label }} mt-2">
             {% for message in messages %}
                 <p>{{ message }}</p>
@@ -65,8 +79,12 @@
     {% endfor %}
     {% block body %}{% endblock %}
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+        integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+        crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/6187023835.js" crossorigin="anonymous"></script>
 </body>
 </html>

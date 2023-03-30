@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 class AlbumController extends AbstractController
 {
-    #[Route('/albums', name: 'album',methods: ["GET"])]
+    #[Route('/albums', name: 'albums',methods: ["GET"])]
     public function listeDesAlbums(AlbumRepository $albumRepository,PaginatorInterface $paginator,Request $request): Response
     {
 
