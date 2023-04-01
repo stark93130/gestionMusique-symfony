@@ -3,10 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Album;
+use App\Model\FiltreAlbum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+
 
 /**
  * @extends ServiceEntityRepository<Album>
@@ -44,17 +46,24 @@ class AlbumRepository extends ServiceEntityRepository
     /**
      * @return Query
      */
-    public function listeAlbumsComplete(): Query
+    public function listeAlbumsComplete(FiltreAlbum $filtre=null): Query
     {
-        return $this->createQueryBuilder('a')
+        $query= $this->createQueryBuilder('a')
             ->select('a','s','art','m')
             ->leftJoin('a.styles','s')
             ->leftJoin('a.artiste','art')
             ->leftJoin('a.morceaux','m')
-            ->orderBy('a.nom', 'ASC')
-            ->getQuery()
+            ->orderBy('a.nom', 'ASC');
+            if(!empty($filtre->nom)){
+                $query->andWhere('a.nom like :nomCherche')
+                        ->setParameter('nomCherche',"%{$filtre->nom}%");
+            }
+        if(!empty($filtre->artiste)){
+            $query->andWhere('a.artiste = :artisteCherche')
+                ->setParameter('artisteCherche',$filtre->artiste);
+        }
+        return $query->getQuery();
 
-        ;
     }
 
 
